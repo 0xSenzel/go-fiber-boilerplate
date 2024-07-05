@@ -1,0 +1,83 @@
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Output of the go coverage tool
+*.out
+
+# Temporary files created by text editors or IDEs
+*.log
+*.swp
+*.swo
+*~
+
+# Go vendor directory (note: this should be included if you are using vendoring)
+vendor/
+
+# Dependency directories (remove the comment if you are not using vendoring)
+# Godeps/
+
+# Dependency directories
+/go/pkg/
+/go/bin/
+
+/tmp/
+/out/
+
+# Node.js dependencies
+node_modules/
+
+# Logs
+logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# JetBrains IDEs
+.idea/
+
+# VS Code
+.vscode/
+
+# GitHub Codespaces
+.devcontainer/
+
+# Go build cache
+go-build/
+go-test-bin/
+
+# Compiled output
+bin/
+dist/
+
+# Test binaries
+*_test
+
+# Local configuration files
+.env
+.env.local
+.env.test
+.env.production
+
+# Backup files
+*.bak
+*.bak2
+
+# Golangci-lint cache
+golangci-lint-cache/
+
+# IDE specific files
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.tmproj
+*.ide
+
+# Glide dependencies
+glide.lock
