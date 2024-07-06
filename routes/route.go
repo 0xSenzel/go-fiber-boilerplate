@@ -7,7 +7,7 @@ import (
 )
 
 func SetupRoutes(app *fiber.App, db *gorm.DB) {
-	app.Post("/user", func(c fiber.Ctx) error {
+	app.Post("/user/create", func(c fiber.Ctx) error {
 		return user.CreateUserHandler(c, db)
 	})
 }

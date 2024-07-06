@@ -21,10 +21,11 @@ func CreateUserHandler(c fiber.Ctx, db *gorm.DB) error {
 
 	createdUser, err := service.CreateUser(db, userRequestDto)
 	if err != nil {
-		c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error(), "message": "Failed to create user"})
-		return err
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(), 
+			"message": "Failed to create user",
+		})
 	}
 
-	c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": `User created successfully`, "user": createdUser})
-	return nil
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": `User created successfully`, "user": createdUser})
 }
