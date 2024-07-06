@@ -8,10 +8,9 @@ import (
 	"gorm.io/gorm"
 )
 
-var Database *gorm.DB
 var DATABASE_URI string = "root:12345@tcp(localhost:3306)/mysql?charset=utf8mb4&parseTime=True&loc=Local"
 
-func ConnectDB() error {
+func ConnectDB() *gorm.DB {
 	var err error 
 
 	db, err := gorm.Open(mysql.Open(DATABASE_URI), &gorm.Config{
@@ -20,17 +19,15 @@ func ConnectDB() error {
 	})
 
 	if err != nil {
-		panic(err)
+		log.Fatalf("failed to connect to the database: %v", err)
 	}
 
-	Database = db
 	log.Println("Successfully connected to the database")
-
-	return nil
+	return db
 }
 
-func Migrate() error {
-	err := Database.AutoMigrate(&tables.User{})
+func Migrate(db *gorm.DB) error {
+	err := db.AutoMigrate(&tables.User{})
 	if err != nil {
 		log.Fatalf("failed to migrate database: %v", err)
 	}
@@ -39,13 +36,13 @@ func Migrate() error {
 	return nil
 }
 
-func CloseDB() error {
-	db, err := Database.DB()
+func CloseDB(db *gorm.DB) error {
+	database, err := db.DB()
 	if err != nil {
 		log.Fatalf("failed to get database connection: %v", err)
 	}
 
-	err = db.Close()
+	err = database.Close()
 	if err != nil {
 		log.Fatalf("failed to close database connection: %v", err)
 	}

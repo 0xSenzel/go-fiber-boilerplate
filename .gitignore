@@ -40,9 +40,6 @@ Thumbs.db
 # JetBrains IDEs
 .idea/
 
-# VS Code
-.vscode/
-
 # GitHub Codespaces
 .devcontainer/
 
@@ -81,3 +78,5 @@ golangci-lint-cache/
 
 # Glide dependencies
 glide.lock
+
+server

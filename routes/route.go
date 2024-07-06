@@ -3,10 +3,11 @@ package routes
 import (
 	"github.com/0xsenzel/go-fiber-boilerplate/internal/controllers/user"
 	"github.com/gofiber/fiber/v3"
+	"gorm.io/gorm"
 )
 
-func SetupRoutes(app *fiber.App) {
-	app.Get("/", func(c fiber.Ctx) error {
-		return c.SendString(user.HelloWorldHandler())
+func SetupRoutes(app *fiber.App, db *gorm.DB) {
+	app.Post("/user", func(c fiber.Ctx) error {
+		return user.CreateUserHandler(c, db)
 	})
 }

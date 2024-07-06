@@ -7,7 +7,7 @@ build:
 # 	clear
 # 	./server
 
-run: build
+run: 
 	clear
 	go run cmd/main.go
 
