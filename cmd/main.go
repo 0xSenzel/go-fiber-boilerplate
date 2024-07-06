@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"github.com/0xsenzel/go-fiber-boilerplate/internal/database/mysql"
 	"github.com/0xsenzel/go-fiber-boilerplate/routes"
 	"github.com/gofiber/fiber/v3"
 )
@@ -11,13 +12,12 @@ func main() {
 	// Initialize a new Fiber app
 	app := fiber.New()
 
-	routes.SetupRoutes(app)
+	mysql.ConnectDB()
+	defer mysql.CloseDB()
 
-	// Define a route for the GET method on the root path '/'
-	// app.Get("/", func(c fiber.Ctx) error {
-	// 	// Send a string response to the client
-	// 	return c.SendString("Hello, World 👋!")
-	// })
+	mysql.Migrate()
+
+	routes.SetupRoutes(app)
     
 	// Start the server on port 3000
 	log.Fatal(app.Listen(":3000"))
