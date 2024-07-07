@@ -30,6 +30,17 @@ func CreateUser(db *gorm.DB, userRequestDto models.UserRequestDto) (*tables.User
 	return user, nil
 }
 
+func GetUserById(db *gorm.DB, id int) (*tables.User, error) {
+	var user tables.User
+
+	err := db.First(&user, id).Error
+	if err!= nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
+
 func checkIfUserExists(db *gorm.DB, email string) (bool, error) {
 	var user tables.User
 

@@ -10,4 +10,7 @@ func SetupRoutes(app *fiber.App, db *gorm.DB) {
 	app.Post("/user/create", func(c fiber.Ctx) error {
 		return user.CreateUserHandler(c, db)
 	})
+	app.Get("/user/:id", func(c fiber.Ctx) error {		
+		return user.GetUserHandler(c, db)
+	})
 }
