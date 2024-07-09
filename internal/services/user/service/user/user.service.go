@@ -14,7 +14,7 @@ func CreateUser(db *gorm.DB, userRequestDto models.UserRequestDto) (*tables.User
 		Email: userRequestDto.Email,
 	}
 
-	exists, err :=  checkIfUserExists(db, user.Email)
+	exists, err :=  CheckIfUserExists(db, user.Email)
 	if err != nil {
 		return nil, err
 	}
@@ -41,14 +41,7 @@ func GetUserById(db *gorm.DB, id int) (*tables.User, error) {
 	return &user, nil
 }
 
-func checkIfUserExists(db *gorm.DB, email string) (bool, error) {
-	var user tables.User
+func ValidatePassword(db *gorm.DB, password string) (bool, error) {
 
-	err := db.Where("email = ?", email).First(&user).Error
-	if err == nil {
-		return true, err
-	}
-
-	return false, nil
 }
 

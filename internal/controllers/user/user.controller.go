@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/0xsenzel/go-fiber-boilerplate/internal/services/user/models"
-	"github.com/0xsenzel/go-fiber-boilerplate/internal/services/user/service"
+	service "github.com/0xsenzel/go-fiber-boilerplate/internal/services/user/service/user"
 	"github.com/gofiber/fiber/v3"
 	"gorm.io/gorm"
 )
