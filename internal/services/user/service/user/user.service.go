@@ -1,8 +1,6 @@
 package service
 
 import (
-	"errors"
-
 	"github.com/0xsenzel/go-fiber-boilerplate/internal/services/user/models"
 	"github.com/0xsenzel/go-fiber-boilerplate/internal/services/user/tables"
 	"gorm.io/gorm"
@@ -14,15 +12,7 @@ func CreateUser(db *gorm.DB, userRequestDto models.UserRequestDto) (*tables.User
 		Email: userRequestDto.Email,
 	}
 
-	exists, err :=  CheckIfUserExists(db, user.Email)
-	if err != nil {
-		return nil, err
-	}
-	if exists {
-		return nil, errors.New("USER ALREADY EXISTS")
-	}
-
-	err = db.Create(user).Error
+	err := db.Create(user).Error
 	if err!= nil {
 		return nil, err
 	}
@@ -42,6 +32,6 @@ func GetUserById(db *gorm.DB, id int) (*tables.User, error) {
 }
 
 func ValidatePassword(db *gorm.DB, password string) (bool, error) {
-
+return true, nil
 }
 
