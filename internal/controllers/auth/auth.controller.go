@@ -16,9 +16,7 @@ func LoginUserHandler(c fiber.Ctx, db *gorm.DB) error {
         })
     }
 
-	password := c.FormValue("password")
-
-	token, err := auth.LoginUser(db, userRequestDto, password)
+	token, err := auth.LoginUser(db, userRequestDto)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(), 

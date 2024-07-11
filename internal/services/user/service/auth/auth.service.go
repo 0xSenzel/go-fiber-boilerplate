@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"errors"
 	"log"
 
 	"github.com/0xsenzel/go-fiber-boilerplate/internal/middlewares"
@@ -9,14 +10,19 @@ import (
 	"gorm.io/gorm"
 )
 
-func LoginUser(db *gorm.DB, userRequestDto models.UserRequestDto, password string) (string, error) {
+func LoginUser(db *gorm.DB, userRequestDto models.UserRequestDto) (string, error) {
 	var user tables.User
-	if err := db.Where(&tables.User{Email: userRequestDto.Email, Name: userRequestDto.Name}).First(&user).Error; 
+
+	if err := db.Where("email = ?", userRequestDto.Email).First(&user).Error; 
 	err != nil {
-		return "", err
+		return "", errors.New("USER NOT FOUND")
 	}
 
-	token, err := middlewares.GenerateToken(&userRequestDto)
+	if (user.Password != userRequestDto.Password) {
+		return "", errors.New("INVALID PASSWORD")
+	}
+
+	token, err := middlewares.GenerateToken(&user)
 	if err != nil {
 		log.Panic(err)
 		return "", err

@@ -16,7 +16,7 @@ func SetupRoutes(app *fiber.App, db *gorm.DB) {
 		return user.GetUserHandler(c, db)
 	})
 
-	app.Post("user/login", func(c fiber.Ctx) error {
+	app.Post("auth/login", func(c fiber.Ctx) error {
 		return auth.LoginUserHandler(c, db)
 	})
 }

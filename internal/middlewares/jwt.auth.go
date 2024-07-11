@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/0xsenzel/go-fiber-boilerplate/internal/services/user/models"
+	"github.com/0xsenzel/go-fiber-boilerplate/internal/services/user/tables"
 	"github.com/gofiber/fiber/v3"
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -34,11 +34,11 @@ func JwtAuth() fiber.Handler {
 	}
 }
 
-func GenerateToken(userRequestDto *models.UserRequestDto) (string, error) {
+func GenerateToken(user *tables.User) (string, error) {
 	claims := jwt.MapClaims{
-		"email": userRequestDto.Email,
-		"name": userRequestDto.Name,
-		"id": userRequestDto.Id,
+		"email": user.Email,
+		"name": user.Name,
+		"id": user.ID,
 		"exp": time.Now().Add(time.Minute * 30).Unix(),
 	}
 	
