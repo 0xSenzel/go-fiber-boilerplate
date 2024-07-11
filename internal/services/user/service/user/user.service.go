@@ -1,6 +1,8 @@
 package service
 
 import (
+	"errors"
+
 	"github.com/0xsenzel/go-fiber-boilerplate/internal/services/user/models"
 	"github.com/0xsenzel/go-fiber-boilerplate/internal/services/user/tables"
 	"gorm.io/gorm"
@@ -10,6 +12,11 @@ func CreateUser(db *gorm.DB, userRequestDto models.UserRequestDto) (*tables.User
 	user := &tables.User{
 		Name:  userRequestDto.Name,
 		Email: userRequestDto.Email,
+	}
+
+	existingUser := db.Where(user).First(&tables.User{}).Error
+	if existingUser == nil {
+		return nil, errors.New("User already exists with email: " + userRequestDto.Email + " and name: " + userRequestDto.Name)
 	}
 
 	err := db.Create(user).Error
