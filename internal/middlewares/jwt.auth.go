@@ -54,7 +54,7 @@ func GenerateToken(user *tables.User) (string, error) {
 		"email": user.Email,
 		"name": user.Name,
 		"id": user.ID,
-		"exp": time.Now().Add(time.Minute * 1).Unix(),
+		"exp": time.Now().Add(time.Minute * 30).Unix(),
 	}
 	
 	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte("secret"))
