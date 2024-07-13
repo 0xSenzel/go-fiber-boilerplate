@@ -35,6 +35,8 @@ func GetUserById(db *gorm.DB, id int) (*tables.User, error) {
 		return nil, err
 	}
 
+	// TODO: map user to dto
+
 	return &user, nil
 }
 
