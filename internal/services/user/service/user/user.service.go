@@ -5,6 +5,7 @@ import (
 
 	"github.com/0xsenzel/go-fiber-boilerplate/internal/services/user/models"
 	"github.com/0xsenzel/go-fiber-boilerplate/internal/services/user/tables"
+	"github.com/jinzhu/copier"
 	"gorm.io/gorm"
 )
 
@@ -27,17 +28,25 @@ func CreateUser(db *gorm.DB, userRequestDto models.UserRequestDto) (*tables.User
 	return user, nil
 }
 
-func GetUserById(db *gorm.DB, id int) (*tables.User, error) {
+func GetUserById(db *gorm.DB, id int) (models.UserRequestDto, error) {
 	var user tables.User
 
 	err := db.First(&user, id).Error
 	if err!= nil {
-		return nil, err
+		return models.UserRequestDto{}, err
 	}
 
-	// TODO: map user to dto
-	// use copier?
-	return &user, nil
+	var userRequestDto models.UserRequestDto
+	err = copier.CopyWithOption(&userRequestDto, &user, copier.Option{
+		DeepCopy: true,
+	})
+	if err != nil {
+		return userRequestDto, errors.New("Failed to copy object with error:" + err.Error())
+	}
+
+	userRequestDto.ID = user.ID
+
+	return userRequestDto, nil
 }
 
 func ValidatePassword(db *gorm.DB, password string) (bool, error) {
