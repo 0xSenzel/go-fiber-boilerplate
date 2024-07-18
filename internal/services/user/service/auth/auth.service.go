@@ -6,6 +6,7 @@ import (
 
 	"github.com/0xsenzel/go-fiber-boilerplate/internal/middlewares"
 	"github.com/0xsenzel/go-fiber-boilerplate/internal/services/user/models"
+	service "github.com/0xsenzel/go-fiber-boilerplate/internal/services/user/service/user"
 	"github.com/0xsenzel/go-fiber-boilerplate/internal/services/user/tables"
 	"gorm.io/gorm"
 )
@@ -17,8 +18,9 @@ func LoginUser(db *gorm.DB, userRequestDto models.UserRequestDto) (string, error
 	err != nil {
 		return "", errors.New("USER NOT FOUND")
 	}
-
-	if (user.Password != userRequestDto.Password) {
+	
+	isValid := service.ValidatePassword(user.Password, userRequestDto.Password)
+	if ( isValid != true) {
 		return "", errors.New("INVALID PASSWORD")
 	}
 

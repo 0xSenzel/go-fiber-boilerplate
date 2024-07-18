@@ -6,6 +6,7 @@ import (
 	"github.com/0xsenzel/go-fiber-boilerplate/internal/services/user/models"
 	"github.com/0xsenzel/go-fiber-boilerplate/internal/services/user/tables"
 	"github.com/jinzhu/copier"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -20,7 +21,14 @@ func CreateUser(db *gorm.DB, userRequestDto models.UserRequestDto) (*tables.User
 		return nil, errors.New("User already exists with email: " + userRequestDto.Email + " and name: " + userRequestDto.Name)
 	}
 
-	err := db.Create(user).Error
+	hash, err := hashPassword(userRequestDto.Password)
+	if err != nil {
+		return nil, errors.New("Unable to encrypt password with error:" + err.Error())
+	}
+
+	user.Password = hash
+
+	err = db.Create(user).Error
 	if err!= nil {
 		return nil, err
 	}
@@ -49,7 +57,13 @@ func GetUserById(db *gorm.DB, id int) (models.UserRequestDto, error) {
 	return userRequestDto, nil
 }
 
-func ValidatePassword(db *gorm.DB, password string) (bool, error) {
-return true, nil
+func hashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+	return string(bytes), err
+}
+
+func ValidatePassword(hash string, password string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
 }
 
