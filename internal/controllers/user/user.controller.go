@@ -28,7 +28,7 @@ func CreateUserHandler(c fiber.Ctx, db *gorm.DB) error {
 		})
 	}
 
-	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": `User created successfully`, "user": createdUser})
+	return c.Status(fiber.StatusCreated).JSON(createdUser)
 }
 
 func GetUserHandler(c fiber.Ctx, db *gorm.DB) error {

@@ -20,7 +20,7 @@ func LoginUser(db *gorm.DB, userRequestDto models.UserRequestDto) (string, error
 	}
 	
 	isValid := service.ValidatePassword(user.Password, userRequestDto.Password)
-	if ( isValid != true) {
+	if (!isValid) {
 		return "", errors.New("INVALID PASSWORD")
 	}
 
