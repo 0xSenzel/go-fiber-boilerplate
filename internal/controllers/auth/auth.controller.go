@@ -1,8 +1,8 @@
 package auth
 
 import (
+	"github.com/0xsenzel/go-fiber-boilerplate/internal/services/auth/service/auth"
 	"github.com/0xsenzel/go-fiber-boilerplate/internal/services/user/models"
-	"github.com/0xsenzel/go-fiber-boilerplate/internal/services/user/service/auth"
 	"github.com/gofiber/fiber/v3"
 	"gorm.io/gorm"
 )
