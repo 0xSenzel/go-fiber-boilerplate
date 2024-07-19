@@ -42,25 +42,25 @@ func CreateUser(db *gorm.DB, userRequestDto models.UserRequestDto) (*models.User
 	return &userResponseDto, nil
 }
 
-func GetUserById(db *gorm.DB, id int) (models.UserRequestDto, error) {
+func GetUserById(db *gorm.DB, id int) (*models.UserResponseDto, error) {
 	var user tables.User
 
 	err := db.First(&user, id).Error
 	if err!= nil {
-		return models.UserRequestDto{}, err
+		return nil, err
 	}
 
-	var userRequestDto models.UserRequestDto
-	err = copier.CopyWithOption(&userRequestDto, &user, copier.Option{
+	var userResponseDto models.UserResponseDto
+	err = copier.CopyWithOption(&userResponseDto, &user, copier.Option{
 		DeepCopy: true,
 	})
 	if err != nil {
-		return userRequestDto, errors.New("Failed to copy object with error:" + err.Error())
+		return &userResponseDto, errors.New("Failed to copy object with error:" + err.Error())
 	}
 
-	userRequestDto.ID = user.ID
+	userResponseDto.ID = user.ID
 
-	return userRequestDto, nil
+	return &userResponseDto, nil
 }
 
 func ValidatePassword(hash string, password string) bool {

@@ -5,6 +5,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/0xsenzel/go-fiber-boilerplate/configs"
 	"github.com/0xsenzel/go-fiber-boilerplate/internal/services/user/tables"
 	"github.com/gofiber/fiber/v3"
 	"github.com/golang-jwt/jwt/v5"
@@ -31,7 +32,7 @@ func JwtAuth(c fiber.Ctx) error {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, &fiber.Error{ Message: "Invalid authorization token"}
 		}
-		return []byte("secret"), nil
+		return []byte(configs.LoadEnv("JWT_SECRET")), nil
 	})
 
 	if err != nil {
@@ -57,7 +58,7 @@ func GenerateToken(user *tables.User) (string, error) {
 		"exp": time.Now().Add(time.Minute * 30).Unix(),
 	}
 	
-	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte("secret"))
+	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte(configs.LoadEnv("JWT_SECRET")))
 	if err != nil {
 		log.Panic(err)
 		return "", err
